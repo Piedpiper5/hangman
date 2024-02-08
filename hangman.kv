@@ -1,0 +1,146 @@
+#:kivy 2.2.1
+<StartingScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: (30/255, 30/255, 30/255, 1)
+            Rectangle:
+                pos: self.pos
+                size: self.size    
+        Label:
+            text: "Hangman"
+            font_size: self.height / 2
+            font_name: "blomberg"
+            size_hint_y: 4
+            color: "#64a1ed"
+            outline_width: 10
+            outline_color: "blue"
+            text_size: self.size
+            padding: (0, 10, 0, 0)
+            valign: 'top'
+            halign: 'center'
+        Widget:
+            height: "20sp"
+        Image: 
+            source: "images/starting-screen-banner.png"
+            size_hint_y: 4
+        Widget:
+            height: "20sp"
+        StartButton:
+            canvas.before:
+                Color:
+                    rgba: self.normal_color if self.state == 'normal' else self.down_color                  
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]
+            text: "Start"
+            size_hint: (0.4, 2)
+            pos_hint: {"center_x": 0.5}
+            font_name: "blomberg"
+            font_size: self.height / 2
+            background_normal: ""
+            corner_radius: 50
+            on_press:
+                root.manager.transition.direction = "up"
+                root.manager.transition.duration = 1
+                root.manager.current = "game_screen"
+        Widget:
+<GameScreen>:
+    BoxLayout: 
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: (20/255, 20/255, 20/255, 1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text: "Hangman"
+            font_size: self.height / 4
+            font_name: "blomberg"
+            size_hint_y: 2
+            color: "#64a1ed"
+            outline_width: 10
+            outline_color: "blue"
+            text_size: self.size
+            padding: (0, 10, 0, 0)
+            valign: 'top'
+            halign: 'center' 
+        BoxLayout:
+            pos_hint: {"center_x": 0.5}
+            canvas.before:
+                Color:
+                    rgba: (20/255, 20/255, 20/255, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Widget:
+                size_hint_x: 0.1
+            BoxLayout:
+                pos_hint: {"right": 2}
+                size_hint_x: 0.5
+                halign: "middle"
+                orientation: "vertical"
+                Label:
+                    text: "Guess this word:"
+                    font_name: "blomberg"
+                    font_size: self.height / 2
+                Label:
+                    id: word_label
+                    text: root.dashes
+                    font_name: "blomberg"
+                    font_size: self.height / 2
+            Image:
+                id: image_label
+                source: "images/0.png"
+                size_hint_x: 0.1
+        Widget:    
+        BoxLayout:
+            width: self.width
+            Widget:
+                
+            BoxLayout:
+                orientation: "vertical"
+                TextInput:
+                    id: text_input
+                    font_size: self.height / 2        
+                    pos_hint: {"center_x": 0.5, "top": 0.2}
+                    border: (0, 3, 0, 3)
+                    cursor_color: (0, 0, 0, 1)
+                    border_color: "black"
+                    multiline: False
+                    on_text_validate:
+                        root.game(text_input.text)
+
+                Button:
+                    id: submit_button
+                    text: "Submit"
+                    background_normal: ""
+                    background_color: "#1fe053"
+                    pos_hint: {"center_x": 0.5, "top": 0.1}
+                    font_name: "blomberg"
+                    font_size: self.height / 2
+                    on_press: 
+                        root.game(text_input.text)
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    canvas.before:
+                        Color:
+                            rgba: (0, 0, 0, 1)
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size 
+                    text: "hanglog"
+                    
+                    font_name: "monospace"
+                    size_hint_y: 0.2
+                       
+                TextInput:
+                    id: hanglog
+                    readonly: True
+                    font_name: "monospace"
+                    foreground_color: "white"
+                    background_color: "black"
