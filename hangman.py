@@ -73,13 +73,14 @@ class GameScreen(Screen):
             for letter in self.word:    
                 dashed_word = dashed_word + letter + " "
             self.ids.word_label.text = dashed_word.rstrip()
+            self.first_line = False
 
         # if user has already guessed the letter:
         elif guess.lower() in self.wrong_guesses or guess.lower() in self.correct_guesses:                    
             self.ids.hanglog.text = self.ids.hanglog.text + "\nyou already guessed " f"{guess.lower()}" " try some other letter"
 
         # if guess is just a letter, doesn't equal an empty string and is in the word
-        elif len(guess.lower()) == 1 and guess.lower() != "" and guess.lower() in self.word.lower():
+        elif len(guess.lower()) == 1 and guess.lower().isalpha() and guess.lower() != "" and guess.lower() in self.word.lower():
             if self.first_line:
                 self.ids.hanglog.text = "you guessed the letter " f"{guess.lower()}!"
             else:    
@@ -102,10 +103,11 @@ class GameScreen(Screen):
                     else:
                         dashed_word =  dashed_word + "_ "
             self.ids.word_label.text = dashed_word.rstrip()
+            self.first_line = False
 
         # if user has entered a wrong guess:
         # if guess is just a letter, doesn't equal an empty string and is not in the word
-        elif len(guess.lower()) == 1 and guess.lower() != "" and guess.lower() not in self.word.lower(): 
+        elif len(guess.lower()) == 1 and guess.lower().isalpha() and guess.lower() != "" and guess.lower() not in self.word.lower(): 
             self.current_image_number = self.current_image_number + 1
             if self.current_image_number < 6:
                 if self.first_line:
@@ -120,8 +122,8 @@ class GameScreen(Screen):
                 self.ids.submit_button.disabled = True
             if self.current_image_number <= 6:
                 self.ids.image_label.source = f"images/{self.current_image_number}.png"
+            self.first_line = False
         self.ids.text_input.text = ""
-        self.first_line = False
         self.ids.hanglog.do_cursor_movement("cursor_down")
         Clock.schedule_once(self.set_focus, 0.1)
         
